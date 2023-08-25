@@ -1,0 +1,36 @@
+﻿<link rel="icon" type="image/x-icon" href="~/Content/images/roltalogo.ico">
+<link href="~/Content/sharedlayout.css" rel="stylesheet" />
+
+<div class="container" id="project-form-container">
+    <div class="form-container">
+        <h2>Add New Project</h2>
+        <form>
+            <div class="form-group">
+                <label for="projectNumber">Project Number:</label>
+                <input type="text" class="form-control" id="projectNumber" name="projectNumber" placeholder="Enter project number" required>
+            </div>
+            <div class="form-group">
+                <label for="projectName">Project Name:</label>
+                <input type="text" class="form-control" id="projectName" name="projectName" placeholder="Enter project name" required>
+            </div>
+            <div class="form-group">
+                <label for="segment">Segment:</label>
+                <input type="text" class="form-control" id="segment" name="segment" placeholder="Enter segment" required>
+            </div>
+            <div class="form-group">
+                <label for="customer">Customer:</label>
+                <input type="text" class="form-control" id="customer" name="customer" placeholder="Enter customer" required>
+            </div>
+            <div class="form-group">
+                <label for="projectType">Project Type:</label>
+                <select id="projectType" name="projectType" class="form-control">
+                    <option value="">Select a Project Type</option>
+                    <option value="billable">Billable</option>
+                    <option value="nonbillable">Non-Billable</option>
+                    <option value="officeSupport">Office Support</option>
+                </select>
+            </div>
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
+    </div>
+</div>

@@ -1,0 +1,285 @@
+﻿@model RoltaTimeSheet.Models.employeeModel
+<link href="~/Content/EmployeeStyles.css" rel="stylesheet"/>
+
+<div class="container">
+    <div class="month-picker-container text-center my-4">
+        <h2 class="month-picker-label text-dark">Fill your time sheet for the month of:</h2>
+        <input type="month" id="selectedMonth" class="form-control"/>
+    </div>
+       
+        @*Billable Projects Form*@
+    <div class="rounded-box">
+        <h3>Billable Projects</h3>
+        <i class="expand-button fa fa-plus billableExpandButton" onclick="toggleForm('billableFormContainer')"></i>
+    </div>
+
+    <div class="form-container hidden billableFormContainer">
+        <div class="billableForm row mb-3" id="tablediv">
+            <div class="col-md-12 mb-3">
+                <label for="name">Project Name:</label>
+                <select id="projectName" name="projectName" class="form-control">
+                    <option value="">Select a Project Name</option>
+                    @foreach (var project in Model.billableProjects.M_Projects)
+                    {
+                        <option value="@project.projectNumber">@project.projectName</option>
+                    }
+                </select>
+            </div>
+            <div class="col-md-6 mb-3">
+                <label for="project_no">Project Number:</label>
+                <select id="projectNumber" name="projectNumber" class="form-select" aria-label="Default select example">
+                    <option value="" selected>Select a Project Number</option>
+                    @foreach (var project in Model.billableProjects.M_Projects)
+                    {
+                        <option value="@project.projectNumber">@project.projectNumber</option>
+                    }
+                </select>
+            </div>
+            <div class="col-md-6 mb-3">
+                <label for="customer">Customer:</label>
+                <select id="projectCustomer" name="customer" class="form-select" aria-label="Default select example">
+                    <option value="" selected>Select a Customer</option>
+                    @foreach (var project in Model.billableProjects.M_Customers)
+                    {
+                        <option value="@project.customerID">@project.customerName</option>
+                    }
+                </select>
+            </div>
+            <div class="col-md-6 segment-control">
+                <label for="segment">Segment:</label>
+                <select id="segment" name="segment" class="form-control">
+                    <option value="">Select a Segment</option>
+                    @foreach (var project in Model.billableProjects.M_Segments)
+                    {
+                        <option value="@project.segmentID">@project.segmentName</option>
+                    }
+                </select>
+            </div>
+            <div class="col-md-6">
+                <label for="hours">Hours:</label>
+                <input type="number" id="hours" name="hours" class="form-control" placeholder="Enter number of hours">
+            </div>
+            <div class="d-flex justify-content-end col-md-12 mt-2">
+                <button type="button" class="btn btn-success pr-3 btn-sm me-1 btn-add" onclick="addBillableData()">
+                    Add
+                </button>
+            </div>
+        </div>
+        <div class="collected-data-table">
+            <table class="table" id="billableData">
+                <thead>
+                    <tr>
+                        <th>Project Number</th>
+                        <th>Project Name</th>
+                        <th>Customer</th>
+                        <th>Segment</th>
+                        <th>Month/Year</th>
+                        <th class="text-end">Hours</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody class="tableBody">
+
+
+                    <tr class="total-row">
+                        <td colspan="5" style="text-align: right;">Total Billable Hours:</td>
+                        <td class="total-hours" colspan="2">0</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    @*Non Billable Support Form*@
+    <div class="rounded-box">
+        <h3>Non Billable Projects/Re-Work</h3>
+        <i class="expand-button fa fa-plus nonBillableExpandButton" onclick="toggleForm('nonBillableFormContainer')"></i>
+    </div>
+    <div class="form-container hidden nonBillableFormContainer">
+        <div class="row gx-2">
+            <div class="nonBillableForm col-md-6">
+                <div class="form-group">
+                    <label for="projectName">Project Name:</label>
+                    <select id="projectName" name="name" class="form-control" required>
+                        <option value="">Select a Project Name</option>
+                        @foreach (var project in Model.NonBillableProjects.M_Projects)
+                        {
+                            <option value="@project.projectNumber">@project.projectName</option>
+                        }
+                    </select>
+                </div>
+            </div>
+            <div class="nonBillableForm col-md-6">
+                <div class="form-group">
+                    <label for="hours">Hours:</label>
+                    <input type="number" id="hours" name="hours" class="form-control" required>
+                </div>
+            </div>
+        </div>
+        <div class="d-flex justify-content-end">
+            <button type="button"
+                    class="btn btn-success d-flex justify-content-end pr-3 btn-sm me-1 mt-2 mb-2 btn-add"
+                    onclick="addData(document.querySelector('.nonBillableFormContainer'), 'nonBillableData')">
+                Add
+            </button>
+        </div>
+        <div class="collected-data-table">
+            <table class="table" id="nonBillableData">
+                <thead>
+                    <tr>
+                        <th>Project Name</th>
+                        <th>Month/Year</th>
+                        <th>Hours</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody class="tableBody">
+                    @*Data will be added dynamically here*@
+                    <tr class="total-row">
+                        <td colspan="3" style="text-align: right;">Total Non-Billable Hours:</td>
+                        <td class="total-hours" colspan="2">0</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    @*Office Support/Sales Support Form*@
+    <div class="rounded-box">
+        <h3>Office Support/Sales Support</h3>
+        <i class="expand-button fa fa-plus officeSupportExpandButton" onclick="toggleForm('officeSupportFormContainer')"></i>
+    </div>
+    <div class="form-container hidden officeSupportFormContainer">
+        <div class="row gx-2">
+            <div class="officeSupportForm col-md-6" id="tablediv">
+                <div class="form-group">
+                    <label for="projectName">Project Name:</label>
+                    <select id="projectName" name="name" class="form-control" required>
+                        <option value="">Select a Project Name</option>
+                        @foreach (var project in Model.officeSupport.M_Projects)
+                        {
+                            <option value="@project.projectNumber">@project.projectName</option>
+                        }
+                    </select>
+                </div>
+            </div>
+            <div class="officeSupportForm col-md-6" id="tablediv">
+                <div class="form-group">
+                    <label for="hours">Hours:</label>
+                    <input type="number" id="hours" name="hours" class="form-control" required>
+                </div>
+            </div>
+
+
+
+            <div class="d-flex justify-content-end">
+                <button type="button"
+                        class="btn btn-success d-flex justify-content-end pr-3 btn-sm me-1 mt-2 mb-2 btn-add"
+                        onclick="addData(document.querySelector('.officeSupportFormContainer'), 'officeSupportData')">
+                    Add
+                </button>
+
+
+
+            </div>
+        </div>
+        <div class="collected-data-table">
+            <table class="table" id="officeSupportData">
+                <thead>
+                    <tr>
+                        <th>Project Name</th>
+                        <th>Month/Year</th>
+                        <th>Hours</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody class="tableBody">
+                    @*Data will be added dynamically here*@
+                    <tr class="total-row">
+                        <td colspan="3" style="text-align: right;">Total Office Support Hours:</td>
+                        <td class="total-hours" colspan="2">0</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    @*Submit button inside the Office Support form container*@
+    <div class="col-md-12 text-center">
+        <button type="button" onclick="submitAllForms()" class="btn submitallforms btn-success" data-bs-toggle="modal">Submit</button>
+       
+
+    </div>
+
+</div>
+
+
+
+
+
+<div class="modal" tabindex="-1" role="dialog" id="dataModal" aria-labelledby="dataModalLabel" aria-hidden="true" data-bs-backdrop="static">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="dataModalLabel">Kindly review your data before final submission</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modalInfo">
+                <h2 style="padding-top:20px;">Total Hours:</h2>
+                <h2> Ulitzation: </h2>
+            </div>
+            <div class="modal-body">
+                <div id="billableTableContainer">
+                    <h4 style="color: #1d4d8f;margin-left: 6px;">Billable Projects</h4>
+                    <table class="table" id="billableDataModal">
+                        <thead>
+                            <tr>
+                                <th>Project Number</th>
+                                <th>Project Name</th>
+                                <th>Customer</th>
+                                <th>Segment</th>
+                                <th>Month/Year</th>
+                                <th>Hours</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @*Table body will be populated by JavaScript*@
+                        </tbody>
+                    </table>
+                </div>
+                <div id="nonBillableTableContainer">
+                    <h4 style="color: #1d4d8f;margin-left: 6px;">Non-Billable Projects</h4>
+                    <table class="table" id="nonBillableDataModal">
+                        <thead>
+                            <tr>
+                                <th>Project Name</th>
+                                <th>Month/Year</th>
+                                <th>Hours</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @*Table body will be populated by JavaScript*@
+                        </tbody>
+                    </table>
+                </div>
+                <div id="officeSupportTableContainer">
+                    <h4 style="color: #1d4d8f;margin-left: 6px;">Office Support/Sales Support</h4>
+                    <table class="table" id="officeSupportDataModal">
+                        <thead>
+                            <tr>
+                                <th>Project Name</th>
+                                <th>Month/Year</th>
+                                <th>Hours</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @*Table body will be populated by JavaScript*@
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-primary" onclick="InsertData();">Submit</button>
+            </div>
+
+        </div>
+    </div>
+</div>

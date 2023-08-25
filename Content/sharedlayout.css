@@ -1,0 +1,53 @@
+﻿body {
+    background-color: white;
+    font-family: 'Poppins', sans-serif;
+    margin: 0;
+    padding-top: 200px;
+}
+
+
+.sidebar {
+    margin: 0;
+    padding: 0;
+    width: 200px;
+    background-color: rgba(29, 77, 143, 255);
+    position: fixed;
+    height: 100%;
+    overflow: auto;
+    z-index: 101; /* Adjust as needed */
+    float: left;
+    color: white;
+    font-weight: 700;
+    margin-left: -12px;
+    margin-top: -34px;
+}
+
+    .sidebar ul {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
+
+    .sidebar li {
+        padding: 0;
+        margin: 0;
+    }
+
+    .sidebar a {
+        display: block;
+        color: white;
+        padding: 16px;
+        text-decoration: none;
+    }
+
+        /* Active/current link */
+        .sidebar a.active {
+            background-color: #04AA6D;
+            color: white;
+        }
+
+        /* Links on mouse-over */
+        .sidebar a:hover:not(.active) {
+            background-color: black;
+            color: white;
+        }

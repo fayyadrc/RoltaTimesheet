@@ -1,0 +1,65 @@
+/*@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap');*/
+
+
+
+
+body {
+  font-family: 'Poppins', Arial, Helvetica, sans-serif;
+  background-color: rgba(29, 77, 143, 255) !important;
+  margin: 0;
+  padding: 0;
+  height:100%;
+  overflow-y:hidden;
+}
+
+.container {
+    background: white;
+    padding: 2em;
+    border-radius: 30px;
+    width: 25%; /* Changed the width to 60% */
+    height: 450px;
+    margin: 1em auto;
+    color: black;
+    margin-top: 50px;
+    display: grid;
+}
+
+.custom-input {
+  width: 60%; /* Changed the width of the input boxes to 70% */
+  display: block;
+  margin-right: auto;
+  margin-left: auto;
+}
+
+form{
+  padding-bottom:70px;
+}
+
+.navbar-text {
+  padding-right: 50px; 
+}
+
+
+#showPasswordToggle {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 1;
+}
+
+.form-outline .form-control {
+  padding-right: 40px; /* Adjust this value as needed */
+  border-radius: 10px;
+}
+
+.content {
+    margin-left: 50px; 
+    z-index: 1; 
+    padding-top:160px;
+}
+
+.links {
+    margin-left: 260px;
+    padding: 20px;
+}

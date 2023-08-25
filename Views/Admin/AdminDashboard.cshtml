@@ -1,0 +1,190 @@
+﻿@model RoltaTimeSheet.Models.ViewTimesheetModel
+@*<script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.0/papaparse.min.js"></script>*@
+<script src="https://cdn.sheetjs.com/xlsx-0.20.0/package/dist/xlsx.full.min.js"></script>
+
+<script src="~/Scripts/AdminScript.js"></script>
+<div class="container">
+    @if (Model.BillableData != null && Model.NonBillableData != null && Model.OfficeSupportData != null)
+    {
+        <div class="container-fluid">
+                <h2 class="employee-picker-label text-dark">Pick an employee:</h2>
+                <select id="employeePicker" class="form-control">
+                    <option value="0">Select an employee</option>
+                </select>
+            </div>
+
+            <div id="totalHoursContainer" class="mt-2 text-dark fw-bold">
+
+            </div>
+
+            <div id="utilizationContainer" class="mt-2 text-dark fw-bold">
+
+            </div>
+
+            <div class="export-button-container text-end mt-4">
+                <button id="exportButton" class="btn btn-primary" onclick="ExportToExcel('xlsx')">
+                    <i class="fa-solid fa-file-arrow-down"></i>Export
+                </button>
+            </div>
+
+    
+        <div class="collected-data-table text-dark">
+            <!-- Billable Projects Table -->
+            <h4 style="padding-top: 20px" ;>Billable Projects</h4>
+            <table class="table" id="billableData">
+                <thead>
+                    <tr>
+                        <th>Reference Number</th>
+                        <th>Project Number</th>
+                        <th>Project Name</th>
+                        <th>Customer</th>
+                        <th>Segment</th>
+                        <th>Month/Year</th>
+                        <th class="text-end">Hours</th>
+                    </tr>
+                </thead>
+                <tbody class="tableBody">
+                    @foreach (var item in Model.BillableData)
+                    {
+                        <tr>
+                            <td>@item.RefNo</td>
+                            <td>@item.ProjectNumber</td>
+                            <td>@item.ProjectName</td>
+                            <td>@item.Customer</td>
+                            <td>@item.Segment</td>
+                            <td>@item.MonthYear</td>
+                            <td>@item.Hours</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+
+            <!-- Non-Billable Projects Table -->
+            <h4>Non-Billable Projects/Re-Work</h4>
+            <table class="table" id="nonBillableData">
+                <thead>
+                    <tr>
+                        <th>Reference Number</th>
+                        <th>Project Name</th>
+                        <th>Month/Year</th>
+                        <th>Hours</th>
+                    </tr>
+                </thead>
+                <tbody class="tableBody">
+                    @foreach (var item in Model.NonBillableData)
+                    {
+                        <tr>
+                            <td>@item.RefNo</td>
+                            <td>@item.ProjectName</td>
+                            <td>@item.MonthYear</td>
+                            <td>@item.Hours</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+
+            <!-- Office Support/Sales Support Table -->
+            <h4>Office Support/Sales Support</h4>
+            <table class="table" id="officeSupportData">
+                <thead>
+                    <tr>
+                        <th>Reference Number</th>
+                        <th>Project Name</th>
+                        <th>Month/Year</th>
+                        <th>Hours</th>
+                    </tr>
+                </thead>
+                <tbody class="tableBody">
+                    @foreach (var item in Model.OfficeSupportData)
+                    {
+                        <tr>
+                            <td>@item.RefNo</td>
+                            <td>@item.ProjectName</td>
+                            <td>@item.MonthYear</td>
+                            <td>@item.Hours</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+    else
+    {
+        <div class="container-fluid">
+            <h2 class="employee-picker-label text-dark">Pick an employee:</h2>
+            <select id="employeePicker" class="form-control">
+                <option value="">Select an employee</option>
+            </select>
+        </div>
+    }
+
+
+</div>
+
+<script>
+    // Define employee related variables
+    var empid;
+    @if(!string.IsNullOrEmpty(@Model.EmployeeID))
+    {
+        <text>
+        empid = @Model.EmployeeID;
+        </text>
+    }
+    else
+    {
+        <text>
+        empid = undefined;
+        </text>
+    }
+
+    // Fetch employee data and populate the dropdown
+    document.addEventListener("DOMContentLoaded", function () {
+        console.log(empid);
+        var employeePicker = document.getElementById("employeePicker");
+
+        fetch('/api/TimesheetAPI/GetViewTimesheets')
+            .then(response => response.json())
+            .then(data => {
+                data.forEach(employee => {
+                    const option = document.createElement('option');
+                    option.value = employee.EmployeeID;
+                    option.textContent = employee.FullName;
+
+                    if (empid == employee.EmployeeID) {
+                        option.selected = true;
+                    }
+                    employeePicker.appendChild(option);
+                });
+            })
+            .catch(error => {
+                console.error(`Error fetching employee names: ${error}`);
+            });
+    });
+
+    // Export tables to Excel
+    function ExportToExcel(type, fn, dl) {
+        //var wb = XLSX.utils.book_new();
+
+        //var tableInfo = [
+        //    { tableId: 'billableData', sheetName: 'BillableData' },
+        //    { tableId: 'nonBillableData', sheetName: 'NonBillableData' },
+        //    { tableId: 'officeSupportData', sheetName: 'OfficeSupportData' }
+        //];
+
+        //tableInfo.forEach(function (info) {
+        //    var elt = document.getElementById(info.tableId);
+        //    var ws = XLSX.utils.table_to_sheet(elt);
+        //    XLSX.utils.book_append_sheet(wb, ws, info.sheetName);
+        //});
+
+        //return dl ?
+        //    XLSX.write(wb, { bookType: type, bookSST: true, type: 'base64' }) :
+        //    XLSX.writeFile(wb, fn || ('TimeSheet Data.' + (type || 'xlsx')));
+
+        window.location.href = '/Admin/ExportToExcel' ;
+    }
+
+
+</script>
+
+

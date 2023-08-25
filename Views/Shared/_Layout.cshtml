@@ -1,0 +1,66 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rolta Timesheet</title>
+
+    @Styles.Render("~/Content/css")
+
+    @Scripts.Render("~/bundles/modernizr")
+
+    <link rel="icon" type="image/x-icon" href="~/Content/images/roltalogo.ico">
+    <link href="~/Content/sharedlayout.css" rel="stylesheet" />
+    <link href="~/Content/AdminStyles.css" rel="stylesheet" />
+    
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-light bg-light justify-content-between fixed-top ">
+        <a class="navbar-brand" href="#">
+            <img src="/Content/images/roltalogopng.png" alt="roltalogo" width="100" styles="margin-left: 10px;">
+        </a>
+        
+            @if (Session["FirstName"] != null && Session["LastName"] != null)
+            {
+                <div class="text">
+                    <h1>Welcome, @Session["FirstName"] @Session["LastName"]</h1>
+                </div>
+            }
+            <ul class="navbar-nav">
+                <!-- Logout Button -->
+                <li class="nav-item">
+                    <a class="btn btn-danger" href="@Url.Action("Logout", "Admin")">Logout</a> @*styles="margin-right: 18px"*@
+                </li>
+            </ul>
+        
+
+    </nav>
+
+    <div class="container-fluid">
+
+        @if (Session["Role"]?.ToString() == "admin")
+        {
+           <div class="col-md-3 sidebar" style="margin-top: -88px;">
+               <ul>
+                   <li><a href="@Url.Action("AdminDashboard", "Admin")">View team timesheet</a></li>
+                   <li><a href="@Url.Action("EmployeeDashboard", "Employee")">Enter timesheet</a></li>
+                   <li><a href="@Url.Action("AddUser", "Admin")">Add User</a></li>
+                   <li><a href="@Url.Action("AddProject", "Admin")">Add Project</a></li>
+                   <li><a href="#">Assign user</a></li>
+               </ul>
+           </div>
+
+        }
+
+        @RenderBody()
+      
+
+    </div>
+
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @RenderSection("scripts", required: false)
+    <script src="~/Scripts/EmployeeScript.js"></script>
+</body>
+</html>
