@@ -1,9 +1,9 @@
 # Timesheet Management System
 
 The **Timesheet Management System** is a robust and comprehensive full-stack web application developed to streamline the tracking of project hours and monitoring work progress. It replaces the traditional Google Sheets-based process, offering dedicated interfaces for employees and administrators to enhance user experience and data management efficiency.
-###(This was created during an internship)
----
 
+---
+###(This was created during an internship)
 ## Features
 
 ### Admin Dashboard:
